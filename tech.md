@@ -10,6 +10,8 @@ ORM: Prisma
 Validation: Zod
 Testing: Jest + Supertest
 Containerization: Docker
+Linting/Formatting: Biome
+Git Hooks: Husky
 
 ## Roles
 
