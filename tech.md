@@ -9,6 +9,7 @@ Database: PostgreSQL
 ORM: Prisma
 Validation: Zod
 Testing: Jest + Supertest
+Containerization: Docker
 
 ## Roles
 
@@ -65,16 +66,17 @@ User identity is determined by `x-user-id` header passed with each request. The 
 | POST   | /api/users  | *     | Create a user  |
 
 #### Create User
-Request: `{ "email": string, "password": string, "role"?: "EMPLOYEE" | "TEAM_LEAD" | "MANAGER" }`
+Request: `{ "name": string, "email": string, "role"?: "EMPLOYEE" | "TEAM_LEAD" | "MANAGER" }`
 - `role` defaults to `EMPLOYEE` if not provided
 
 ### Task Management
 
-| Method | Endpoint              | Roles              | Description       |
-|--------|-----------------------|--------------------|-------------------|
-| POST   | /api/tasks            | *                  | Create a task     |
-| POST   | /api/tasks/search     | *                  | List/filter tasks |
-| PUT    | /api/tasks/:id/status | TEAM_LEAD, MANAGER | Update status     |
+| Method | Endpoint               | Roles              | Description       |
+|--------|------------------------|--------------------|-------------------|
+| POST   | /api/tasks             | *                  | Create a task     |
+| POST   | /api/tasks/search      | *                  | List/filter tasks |
+| POST   | /api/tasks/:id/approve | TEAM_LEAD, MANAGER | Approve a task    |
+| POST   | /api/tasks/:id/reject  | TEAM_LEAD, MANAGER | Reject a task     |
 
 #### Create Task
 Request: `{ "title": string, "description"?: string }`
@@ -86,11 +88,15 @@ Request: `{ "title"?: string, "description"?: string, "status"?: string, "create
 - All filters are optional, returns matching tasks
 - POST method chosen to support complex filter payloads
 
-#### Status Update
-Request: `{ "status": "APPROVED" | "REJECTED" }`
-- Only `TEAM_LEAD` and `MANAGER` can update
-- Cannot modify an already `APPROVED` task (no re-approval, no status change)
-- Cannot modify an already `REJECTED` task
+#### Approve Task
+`POST /api/tasks/:id/approve`
+- Only `TEAM_LEAD` and `MANAGER` can approve
+- Cannot approve an already `APPROVED` or `REJECTED` task
+
+#### Reject Task
+`POST /api/tasks/:id/reject`
+- Only `TEAM_LEAD` and `MANAGER` can reject
+- Cannot reject an already `APPROVED` or `REJECTED` task
 
 ## Project Structure
 
