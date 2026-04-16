@@ -10,4 +10,8 @@ export const auditService = {
   }) {
     return auditRepository.log(data);
   },
+
+  findAll() {
+    return auditRepository.findAll();
+  },
 };

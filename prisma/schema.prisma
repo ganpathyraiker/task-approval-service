@@ -27,7 +27,6 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
 
   tasks     Task[]
-  auditLogs AuditLog[]
 
   @@map("users")
 }
@@ -54,8 +53,6 @@ model AuditLog {
   performedBy String   @map("performed_by")
   metadata    Json?
   createdAt   DateTime @default(now()) @map("created_at")
-
-  performer   User     @relation(fields: [performedBy], references: [id])
 
   @@map("audit_logs")
 }

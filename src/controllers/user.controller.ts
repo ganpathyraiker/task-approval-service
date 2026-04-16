@@ -12,4 +12,22 @@ export const userController = {
       next(err);
     }
   },
+
+  async list(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const users = await userService.findAll();
+      res.json(users);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      await userService.delete(req.params.id as string);
+      res.status(204).send();
+    } catch (err) {
+      next(err);
+    }
+  },
 };

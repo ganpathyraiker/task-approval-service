@@ -86,19 +86,23 @@ Request: `{ "title": string, "description"?: string }`
 - `createdBy` is set from the `x-user-id` header
 
 #### List Tasks (Search)
-Request: `{ "title"?: string, "description"?: string, "status"?: string, "createdBy"?: string }`
+Request: `{ "title"?: string, "description"?: string, "status"?: string, "createdBy"?: string, "page"?: number, "limit"?: number }`
 - All filters are optional, returns matching tasks
 - POST method chosen to support complex filter payloads
+- `page` defaults to `1`, `limit` defaults to `20`
+- Response includes `{ data: Task[], total: number, page: number, limit: number }`
 
 #### Approve Task
 `POST /api/tasks/:id/approve`
 - Only `TEAM_LEAD` and `MANAGER` can approve
 - Cannot approve an already `APPROVED` or `REJECTED` task
+- Cannot approve a task you created (self-approval is forbidden)
 
 #### Reject Task
 `POST /api/tasks/:id/reject`
 - Only `TEAM_LEAD` and `MANAGER` can reject
 - Cannot reject an already `APPROVED` or `REJECTED` task
+- Cannot reject a task you created (self-rejection is forbidden)
 
 ## Project Structure
 
@@ -174,9 +178,8 @@ A few default users will be seeded so the system can be used immediately.
 - Role checked on every protected route via middleware
 - No user can approve their own task (optional safeguard — review if needed)
 
-## Review Points
+## Design Decisions
 
-Please review and confirm:
-1. Should a user be prevented from approving their own task?
-2. Should `REJECTED` tasks also be immutable (like `APPROVED`), or can they be re-opened?
-3. Do you want pagination on the task list endpoint?
+1. **Self-approval prevention** — A user cannot approve or reject their own task. Only `TEAM_LEAD` and `MANAGER` roles can approve/reject, and the acting user must not be the task creator.
+2. **Immutability** — Both `APPROVED` and `REJECTED` tasks are immutable. Once a task reaches either terminal state it cannot be modified, re-approved, or re-rejected.
+3. **Pagination** — The `POST /api/tasks/search` endpoint supports pagination via `page` and `limit` fields in the request body. Default: `page=1`, `limit=20`.

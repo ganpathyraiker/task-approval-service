@@ -13,4 +13,12 @@ export const userRepository = {
   findByEmail(email: string) {
     return prisma.user.findUnique({ where: { email } });
   },
+
+  findAll() {
+    return prisma.user.findMany({ orderBy: { createdAt: "asc" } });
+  },
+
+  deleteById(id: string) {
+    return prisma.user.delete({ where: { id } });
+  },
 };

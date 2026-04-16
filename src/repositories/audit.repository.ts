@@ -19,4 +19,10 @@ export const auditRepository = {
       },
     });
   },
+
+  findAll() {
+    return prisma.auditLog.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  },
 };
