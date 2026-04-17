@@ -16,6 +16,10 @@ export const taskRepository = {
     });
   },
 
+  findByTitle(title: string) {
+    return prisma.task.findFirst({ where: { title: { equals: title, mode: "insensitive" } } });
+  },
+
   findAll(status?: TaskStatus) {
     return prisma.task.findMany({
       where: status ? { status } : undefined,

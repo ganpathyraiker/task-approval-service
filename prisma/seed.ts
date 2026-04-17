@@ -7,7 +7,6 @@ async function main() {
     { name: "Admin User", email: "admin@taskapp.com", role: Role.MANAGER },
     { name: "Lead User", email: "lead@taskapp.com", role: Role.TEAM_LEAD },
     { name: "John Doe", email: "johndoe@taskapp.com", role: Role.EMPLOYEE },
-    { name: "Sara Doe", email: "saradoe@taskapp.com", role: Role.EMPLOYEE },
   ];
 
   for (const user of users) {

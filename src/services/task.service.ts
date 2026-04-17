@@ -1,10 +1,15 @@
 import { TaskStatus } from "@prisma/client";
-import { ForbiddenError, NotFoundError } from "../errors";
+import { ForbiddenError, NotFoundError, ValidationError } from "../errors";
 import { taskRepository } from "../repositories/task.repository";
 import { auditService } from "./audit.service";
 
 export const taskService = {
   async create(data: { title: string; description?: string; createdBy: string }) {
+    const existing = await taskRepository.findByTitle(data.title);
+    if (existing) {
+      throw new ValidationError(`A task with title "${data.title}" already exists`);
+    }
+
     const task = await taskRepository.create(data);
 
     await auditService.log({
