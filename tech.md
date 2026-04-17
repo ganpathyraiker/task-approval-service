@@ -43,6 +43,7 @@ Git Hooks: Husky
 | status      | ENUM         | PENDING, APPROVED, REJECTED    |
 | created_by  | UUID (FK)    | References users.id            |
 | created_at  | TIMESTAMP    | Default: now()                 |
+| value  | INTEGER    | Default: 0                 |
 | updated_at  | TIMESTAMP    | Auto-updated                   |
 
 ### audit_logs
@@ -176,10 +177,9 @@ A few default users will be seeded so the system can be used immediately.
 
 ### Security
 - Role checked on every protected route via middleware
-- No user can approve their own task (optional safeguard — review if needed)
+- No employee can approve / reject their own task
 
 ## Design Decisions
 
-1. **Self-approval prevention** — A user cannot approve or reject their own task. Only `TEAM_LEAD` and `MANAGER` roles can approve/reject, and the acting user must not be the task creator.
-2. **Immutability** — Both `APPROVED` and `REJECTED` tasks are immutable. Once a task reaches either terminal state it cannot be modified, re-approved, or re-rejected.
-3. **Pagination** — The `POST /api/tasks/search` endpoint supports pagination via `page` and `limit` fields in the request body. Default: `page=1`, `limit=20`.
+1. **Self-approval prevention** — An employee cannot approve or reject their own task. Only `TEAM_LEAD` and `MANAGER` roles can approve/reject.
+2. **Immutability** — Both `APPROVED` and `REJECTED` tasks are immutable.
