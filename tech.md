@@ -79,25 +79,16 @@ Git Hooks: Husky
 Request: `{ "title": string, "description"?: string }`
 - `status` defaults to `PENDING`
 - `createdBy` is set from the `x-user-id` header
-
-#### List Tasks (Search)
-Request: `{ "title"?: string, "description"?: string, "status"?: string, "createdBy"?: string, "page"?: number, "limit"?: number }`
-- All filters are optional, returns matching tasks
-- POST method chosen to support complex filter payloads
-- `page` defaults to `1`, `limit` defaults to `20`
-- Response includes `{ data: Task[], total: number, page: number, limit: number }`
-
+- 
 #### Approve Task
 `POST /api/tasks/:id/approve`
 - Only `TEAM_LEAD` and `MANAGER` can approve
 - Cannot approve an already `APPROVED` or `REJECTED` task
-- Cannot approve a task you created (self-approval is forbidden)
 
 #### Reject Task
 `POST /api/tasks/:id/reject`
 - Only `TEAM_LEAD` and `MANAGER` can reject
 - Cannot reject an already `APPROVED` or `REJECTED` task
-- Cannot reject a task you created (self-rejection is forbidden)
 
 ## Project Structure
 
