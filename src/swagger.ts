@@ -170,6 +170,27 @@ const swaggerDocument = {
       },
     },
     "/api/tasks": {
+      get: {
+        tags: ["Tasks"],
+        summary: "Fetch all tasks",
+        parameters: [
+          { $ref: "#/components/parameters/XUserId" },
+          {
+            name: "status",
+            in: "query",
+            required: false,
+            schema: { $ref: "#/components/schemas/TaskStatus" },
+            description: "Filter by task status",
+          },
+        ],
+        responses: {
+          200: {
+            description: "All tasks",
+            content: { "application/json": { schema: { type: "array", items: { $ref: "#/components/schemas/Task" } } } },
+          },
+          401: { description: "Missing or invalid x-user-id", content: { "application/json": { schema: { $ref: "#/components/schemas/ErrorResponse" } } } },
+        },
+      },
       post: {
         tags: ["Tasks"],
         summary: "Create a task",
@@ -201,44 +222,6 @@ const swaggerDocument = {
             description: "Validation error",
             content: {
               "application/json": { schema: { $ref: "#/components/schemas/ErrorResponse" } },
-            },
-          },
-          401: {
-            description: "Missing or invalid x-user-id",
-            content: {
-              "application/json": { schema: { $ref: "#/components/schemas/ErrorResponse" } },
-            },
-          },
-        },
-      },
-    },
-    "/api/tasks/search": {
-      post: {
-        tags: ["Tasks"],
-        summary: "Search / list tasks",
-        parameters: [{ $ref: "#/components/parameters/XUserId" }],
-        requestBody: {
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                  title: { type: "string", example: "Review" },
-                  description: { type: "string" },
-                  status: { $ref: "#/components/schemas/TaskStatus" },
-                  createdBy: { type: "string", format: "uuid" },
-                },
-              },
-            },
-          },
-        },
-        responses: {
-          200: {
-            description: "List of matching tasks",
-            content: {
-              "application/json": {
-                schema: { type: "array", items: { $ref: "#/components/schemas/Task" } },
-              },
             },
           },
           401: {

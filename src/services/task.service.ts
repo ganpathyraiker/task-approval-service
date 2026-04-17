@@ -18,13 +18,8 @@ export const taskService = {
     return task;
   },
 
-  async search(filters: {
-    title?: string;
-    description?: string;
-    status?: TaskStatus;
-    createdBy?: string;
-  }) {
-    return taskRepository.search(filters);
+  findAll(status?: TaskStatus) {
+    return taskRepository.findAll(status);
   },
 
   async approve(taskId: string, performedBy: string) {

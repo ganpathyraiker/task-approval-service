@@ -8,8 +8,8 @@ const router = Router();
 
 router.use(userContext);
 
+router.get("/", taskController.list);
 router.post("/", taskController.create);
-router.post("/search", taskController.search);
 router.post("/:id/approve", authorize(Role.TEAM_LEAD, Role.MANAGER), taskController.approve);
 router.post("/:id/reject", authorize(Role.TEAM_LEAD, Role.MANAGER), taskController.reject);
 

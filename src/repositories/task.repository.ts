@@ -1,4 +1,4 @@
-import { type Prisma, TaskStatus } from "@prisma/client";
+import { TaskStatus } from "@prisma/client";
 import { prisma } from "../config";
 
 export const taskRepository = {
@@ -16,29 +16,9 @@ export const taskRepository = {
     });
   },
 
-  search(filters: {
-    title?: string;
-    description?: string;
-    status?: TaskStatus;
-    createdBy?: string;
-  }) {
-    const where: Prisma.TaskWhereInput = {};
-
-    if (filters.title) {
-      where.title = { contains: filters.title, mode: "insensitive" };
-    }
-    if (filters.description) {
-      where.description = { contains: filters.description, mode: "insensitive" };
-    }
-    if (filters.status) {
-      where.status = filters.status;
-    }
-    if (filters.createdBy) {
-      where.createdBy = filters.createdBy;
-    }
-
+  findAll(status?: TaskStatus) {
     return prisma.task.findMany({
-      where,
+      where: status ? { status } : undefined,
       include: { creator: { select: { id: true, name: true, email: true, role: true } } },
       orderBy: { createdAt: "desc" },
     });

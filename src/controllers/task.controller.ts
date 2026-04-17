@@ -1,7 +1,8 @@
 import type { NextFunction, Response } from "express";
 import { taskService } from "../services/task.service";
 import type { AuthenticatedRequest } from "../types";
-import { createTaskSchema, searchTaskSchema } from "../validators/task.validator";
+import { createTaskSchema } from "../validators/task.validator";
+import { TaskStatus } from "@prisma/client";
 
 export const taskController = {
   async create(req: AuthenticatedRequest, res: Response, next: NextFunction) {
@@ -18,10 +19,10 @@ export const taskController = {
     }
   },
 
-  async search(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  async list(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
-      const filters = searchTaskSchema.parse(req.body);
-      const tasks = await taskService.search(filters);
+      const status = req.query.status as TaskStatus | undefined;
+      const tasks = await taskService.findAll(status);
       res.json(tasks);
     } catch (err) {
       next(err);
