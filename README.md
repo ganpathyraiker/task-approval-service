@@ -49,6 +49,9 @@ docker compose down
 docker compose down -v
 ```
 
+### View apis built
+[Visit swagger page](http://localhost:3000/api-docs/)
+
 ## Default Seeded Users
 
 These users are available immediately after startup:
