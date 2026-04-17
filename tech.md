@@ -60,24 +60,18 @@ Git Hooks: Husky
 
 ## API Design
 
-User identity is determined by `x-user-id` header passed with each request. The user's role is looked up from the database.
-
 ### User Management
 
 | Method | Endpoint    | Roles | Description    |
 |--------|-------------|-------|----------------|
 | POST   | /api/users  | *     | Create a user  |
 
-#### Create User
-Request: `{ "name": string, "email": string, "role"?: "EMPLOYEE" | "TEAM_LEAD" | "MANAGER" }`
-- `role` defaults to `EMPLOYEE` if not provided
-
 ### Task Management
 
 | Method | Endpoint               | Roles              | Description       |
 |--------|------------------------|--------------------|-------------------|
+| GET   | /api/tasks             | *                  | Fetch all task     |
 | POST   | /api/tasks             | *                  | Create a task     |
-| POST   | /api/tasks/search      | *                  | List/filter tasks |
 | POST   | /api/tasks/:id/approve | TEAM_LEAD, MANAGER | Approve a task    |
 | POST   | /api/tasks/:id/reject  | TEAM_LEAD, MANAGER | Reject a task     |
 
