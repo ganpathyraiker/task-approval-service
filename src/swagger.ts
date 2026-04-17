@@ -103,55 +103,6 @@ const swaggerDocument = {
           },
         },
       },
-      post: {
-        tags: ["Users"],
-        summary: "Create a user",
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                required: ["name", "email"],
-                properties: {
-                  name: { type: "string", example: "Jane Doe" },
-                  email: { type: "string", format: "email", example: "jane@example.com" },
-                },
-              },
-            },
-          },
-        },
-        responses: {
-          201: {
-            description: "User created",
-            content: { "application/json": { schema: { $ref: "#/components/schemas/User" } } },
-          },
-          400: {
-            description: "Validation error",
-            content: {
-              "application/json": { schema: { $ref: "#/components/schemas/ErrorResponse" } },
-            },
-          },
-        },
-      },
-    },
-    "/api/users/{id}": {
-      delete: {
-        tags: ["Users"],
-        summary: "Delete a user by ID",
-        parameters: [
-          { name: "id", in: "path", required: true, schema: { type: "string", format: "uuid" } },
-        ],
-        responses: {
-          204: { description: "User deleted" },
-          404: {
-            description: "User not found",
-            content: {
-              "application/json": { schema: { $ref: "#/components/schemas/ErrorResponse" } },
-            },
-          },
-        },
-      },
     },
     "/api/audit-logs": {
       get: {
