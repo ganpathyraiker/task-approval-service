@@ -1,6 +1,7 @@
 import { TaskStatus } from "@prisma/client";
 import { ConflictError, ForbiddenError, NotFoundError, ValidationError } from "../errors";
 import { taskRepository } from "../repositories/task.repository";
+import type { TaskWithVersion } from "../types";
 import { auditService } from "./audit.service";
 
 export const taskService = {
@@ -38,7 +39,11 @@ export const taskService = {
       throw new ForbiddenError(`Cannot approve a task with status ${task.status}`);
     }
 
-    const result = await taskRepository.updateStatus(taskId, TaskStatus.APPROVED, (task as any).version);
+    const result = await taskRepository.updateStatus(
+      taskId,
+      TaskStatus.APPROVED,
+      (task as unknown as TaskWithVersion).version,
+    );
 
     if (result.count === 0) {
       throw new ConflictError("Task was modified by another request, please retry");
@@ -68,7 +73,11 @@ export const taskService = {
       throw new ForbiddenError(`Cannot reject a task with status ${task.status}`);
     }
 
-    const result = await taskRepository.updateStatus(taskId, TaskStatus.REJECTED, (task as any).version);
+    const result = await taskRepository.updateStatus(
+      taskId,
+      TaskStatus.REJECTED,
+      (task as unknown as TaskWithVersion).version,
+    );
 
     if (result.count === 0) {
       throw new ConflictError("Task was modified by another request, please retry");

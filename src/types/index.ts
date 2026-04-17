@@ -9,3 +9,8 @@ export interface UserContext {
 export interface AuthenticatedRequest extends Request {
   user?: UserContext;
 }
+
+export interface TaskWithVersion {
+  version: number;
+  [key: string]: unknown;
+}
