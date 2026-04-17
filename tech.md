@@ -43,7 +43,7 @@ Git Hooks: Husky
 | status      | ENUM         | PENDING, APPROVED, REJECTED    |
 | created_by  | UUID (FK)    | References users.id            |
 | created_at  | TIMESTAMP    | Default: now()                 |
-| value  | INTEGER    | Default: 0                 |
+| version  | INTEGER    | Default: 0                 |
 | updated_at  | TIMESTAMP    | Auto-updated                   |
 
 ### audit_logs
