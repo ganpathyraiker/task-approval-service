@@ -9,5 +9,5 @@ export const userController = {
     } catch (err) {
       next(err);
     }
-  }
+  },
 };
