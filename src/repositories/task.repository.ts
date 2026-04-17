@@ -28,11 +28,12 @@ export const taskRepository = {
     });
   },
 
-  updateStatus(id: string, status: TaskStatus) {
-    return prisma.task.update({
-      where: { id },
-      data: { status },
-      include: { creator: { select: { id: true, name: true, email: true, role: true } } },
-    });
+  async updateStatus(id: string, status: TaskStatus, version: number) {
+    const result = await prisma.$executeRaw`
+      UPDATE tasks
+      SET status = ${status}::"TaskStatus", version = ${version + 1}, updated_at = NOW()
+      WHERE id = ${id} AND version = ${version}
+    `;
+    return { count: result };
   },
 };
