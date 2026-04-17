@@ -18,8 +18,13 @@ jest.mock("../src/config", () => ({
 
 const mockPrisma = prisma as jest.Mocked<typeof prisma>;
 
-const EMPLOYEE = { id: "user-employee", name: "Employee User", email: "employee@taskapp.com", role: "EMPLOYEE" };
-const LEAD     = { id: "user-lead",     name: "Lead User",     email: "lead@taskapp.com",     role: "TEAM_LEAD" };
+const EMPLOYEE = {
+  id: "user-employee",
+  name: "Employee User",
+  email: "employee@taskapp.com",
+  role: "EMPLOYEE",
+};
+const LEAD = { id: "user-lead", name: "Lead User", email: "lead@taskapp.com", role: "TEAM_LEAD" };
 
 const baseTask = {
   id: "task-1",
@@ -40,9 +45,7 @@ describe("GET /api/tasks", () => {
     (mockPrisma.user.findUnique as jest.Mock).mockResolvedValue(EMPLOYEE);
     (mockPrisma.task.findMany as jest.Mock).mockResolvedValue([baseTask]);
 
-    const res = await request(app)
-      .get("/api/tasks")
-      .set("x-user-id", EMPLOYEE.id);
+    const res = await request(app).get("/api/tasks").set("x-user-id", EMPLOYEE.id);
 
     expect(res.status).toBe(200);
     expect(res.body).toHaveLength(1);
@@ -53,9 +56,7 @@ describe("GET /api/tasks", () => {
     (mockPrisma.user.findUnique as jest.Mock).mockResolvedValue(EMPLOYEE);
     (mockPrisma.task.findMany as jest.Mock).mockResolvedValue([]);
 
-    const res = await request(app)
-      .get("/api/tasks?status=APPROVED")
-      .set("x-user-id", EMPLOYEE.id);
+    const res = await request(app).get("/api/tasks?status=APPROVED").set("x-user-id", EMPLOYEE.id);
 
     expect(res.status).toBe(200);
     expect(mockPrisma.task.findMany).toHaveBeenCalledWith(
@@ -84,10 +85,7 @@ describe("POST /api/tasks", () => {
   it("returns 400 when title is missing", async () => {
     (mockPrisma.user.findUnique as jest.Mock).mockResolvedValue(EMPLOYEE);
 
-    const res = await request(app)
-      .post("/api/tasks")
-      .set("x-user-id", EMPLOYEE.id)
-      .send({});
+    const res = await request(app).post("/api/tasks").set("x-user-id", EMPLOYEE.id).send({});
 
     expect(res.status).toBe(400);
   });
@@ -102,9 +100,7 @@ describe("POST /api/tasks/:id/approve", () => {
     (mockPrisma.$executeRaw as jest.Mock).mockResolvedValue(1);
     (mockPrisma.auditLog.create as jest.Mock).mockResolvedValue({});
 
-    const res = await request(app)
-      .post("/api/tasks/task-1/approve")
-      .set("x-user-id", LEAD.id);
+    const res = await request(app).post("/api/tasks/task-1/approve").set("x-user-id", LEAD.id);
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe("APPROVED");
@@ -113,9 +109,7 @@ describe("POST /api/tasks/:id/approve", () => {
   it("returns 403 when an EMPLOYEE tries to approve", async () => {
     (mockPrisma.user.findUnique as jest.Mock).mockResolvedValue(EMPLOYEE);
 
-    const res = await request(app)
-      .post("/api/tasks/task-1/approve")
-      .set("x-user-id", EMPLOYEE.id);
+    const res = await request(app).post("/api/tasks/task-1/approve").set("x-user-id", EMPLOYEE.id);
 
     expect(res.status).toBe(403);
   });
@@ -125,9 +119,7 @@ describe("POST /api/tasks/:id/approve", () => {
     (mockPrisma.task.findUnique as jest.Mock).mockResolvedValue(baseTask);
     (mockPrisma.$executeRaw as jest.Mock).mockResolvedValue(0);
 
-    const res = await request(app)
-      .post("/api/tasks/task-1/approve")
-      .set("x-user-id", LEAD.id);
+    const res = await request(app).post("/api/tasks/task-1/approve").set("x-user-id", LEAD.id);
 
     expect(res.status).toBe(409);
   });
@@ -142,9 +134,7 @@ describe("POST /api/tasks/:id/reject", () => {
     (mockPrisma.$executeRaw as jest.Mock).mockResolvedValue(1);
     (mockPrisma.auditLog.create as jest.Mock).mockResolvedValue({});
 
-    const res = await request(app)
-      .post("/api/tasks/task-1/reject")
-      .set("x-user-id", LEAD.id);
+    const res = await request(app).post("/api/tasks/task-1/reject").set("x-user-id", LEAD.id);
 
     expect(res.status).toBe(200);
     expect(res.body.status).toBe("REJECTED");
@@ -153,9 +143,7 @@ describe("POST /api/tasks/:id/reject", () => {
   it("returns 403 when an EMPLOYEE tries to reject", async () => {
     (mockPrisma.user.findUnique as jest.Mock).mockResolvedValue(EMPLOYEE);
 
-    const res = await request(app)
-      .post("/api/tasks/task-1/reject")
-      .set("x-user-id", EMPLOYEE.id);
+    const res = await request(app).post("/api/tasks/task-1/reject").set("x-user-id", EMPLOYEE.id);
 
     expect(res.status).toBe(403);
   });
@@ -165,9 +153,7 @@ describe("POST /api/tasks/:id/reject", () => {
     (mockPrisma.task.findUnique as jest.Mock).mockResolvedValue(baseTask);
     (mockPrisma.$executeRaw as jest.Mock).mockResolvedValue(0);
 
-    const res = await request(app)
-      .post("/api/tasks/task-1/reject")
-      .set("x-user-id", LEAD.id);
+    const res = await request(app).post("/api/tasks/task-1/reject").set("x-user-id", LEAD.id);
 
     expect(res.status).toBe(409);
   });
