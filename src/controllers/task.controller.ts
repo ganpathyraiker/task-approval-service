@@ -1,8 +1,8 @@
+import type { TaskStatus } from "@prisma/client";
 import type { NextFunction, Response } from "express";
 import { taskService } from "../services/task.service";
 import type { AuthenticatedRequest } from "../types";
 import { createTaskSchema } from "../validators/task.validator";
-import { TaskStatus } from "@prisma/client";
 
 export const taskController = {
   async create(req: AuthenticatedRequest, res: Response, next: NextFunction) {

@@ -186,9 +186,18 @@ const swaggerDocument = {
         responses: {
           200: {
             description: "All tasks",
-            content: { "application/json": { schema: { type: "array", items: { $ref: "#/components/schemas/Task" } } } },
+            content: {
+              "application/json": {
+                schema: { type: "array", items: { $ref: "#/components/schemas/Task" } },
+              },
+            },
           },
-          401: { description: "Missing or invalid x-user-id", content: { "application/json": { schema: { $ref: "#/components/schemas/ErrorResponse" } } } },
+          401: {
+            description: "Missing or invalid x-user-id",
+            content: {
+              "application/json": { schema: { $ref: "#/components/schemas/ErrorResponse" } },
+            },
+          },
         },
       },
       post: {
