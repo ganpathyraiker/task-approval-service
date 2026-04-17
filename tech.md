@@ -159,7 +159,7 @@ A few default users will be seeded so the system can be used immediately.
 |---------------|----------------------|-----------|
 | Admin User    | admin@taskapp.com    | MANAGER   |
 | Lead User     | lead@taskapp.com     | TEAM_LEAD |
-| Employee User | employee@taskapp.com | EMPLOYEE  |
+| John DOe | johndoe@taskapp.com | EMPLOYEE  |
 ```
 
 ## Additional Considerations
