@@ -37,12 +37,6 @@ This will:
 docker compose up
 ```
 
-### Run in background (detached)
-
-```bash
-docker compose up --build -d
-```
-
 ### Tear down (keeps DB data)
 
 ```bash
@@ -63,7 +57,7 @@ These users are available immediately after startup:
 |---------------|----------------------|-----------|
 | Admin User    | admin@taskapp.com    | MANAGER   |
 | Lead User     | lead@taskapp.com     | TEAM_LEAD |
-| Employee User | employee@taskapp.com | EMPLOYEE  |
+| John Doe | johndoe@taskapp.com | EMPLOYEE  |
 
 Use the `id` of any seeded user as the `x-user-id` header in requests.
 
